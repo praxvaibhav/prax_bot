@@ -26,7 +26,7 @@ exports.handle = (client) => {
 			client.addTextResponse('hi there')
 			client.addResponse('provide_whether/temperature', {
 				'number/temperature': 23,
-				City: 'Pune'
+				'city': 'Pune'
 			})
 			client.done()
 		}
