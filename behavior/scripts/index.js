@@ -8,12 +8,7 @@ exports.handle = (client) => {
 		},
 
 		prompt() {
-			client.addResponse('greeting')
-			/*client.addResponse('provide/documentation', {
-				documentation_link: 'http://docs.init.ai',
-			})
-			client.addResponse('provide/instructions')*/
-
+			client.addResponse('welcome')
 			client.updateConversationState({
 				helloSent: true
 			})
@@ -22,28 +17,29 @@ exports.handle = (client) => {
 		}
 	})
 
-	const untrained = client.createStep({
+	const provideWeather = client.createStep({
 		satisfied() {
 			return false
 		},
 
 		prompt() {
-			client.addResponse('apology/untrained')
+			client.addTextResponse('hi there')
+			client.addResponse('provide_whether/temperature', {
+				'number/temperature': 23,
+				City: 'Pune'
+			})
 			client.done()
 		}
 	})
 
 	client.runFlow({
-		classifications: {
-			// map inbound message classifications to names of streams
-		},
-		autoResponses: {
-			// configure responses to be automatically sent as predicted by the machine learning model
-		},
-		streams: {
-			main: 'onboarding',
-			onboarding: [sayHello],
-			end: [untrained],
-		},
+	  classifications: {
+	  	'greeting': 'hi',
+	  	'ask_whether/temperature': 'hi'
+	  },
+	  streams: {
+	  	main: ['hi'],
+	    hi: [provideWeather]
+	  }
 	})
 }

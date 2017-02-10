@@ -7,4 +7,4 @@ tell me temperature in [Pune](City)
 * ask_whether/temperature
 
 < its [22](number/temperature) degree in [Pune](City) right now
-* out_of_domain
+* provide_whether/temperature
