@@ -22,11 +22,20 @@ exports.handle = (client) => {
 			return false
 		},
 
+		extractInfo() {
+			let city = client.getFirstEntityWithRole(client.getMessagePart(), 'city')
+			if (city) {
+				client.updateConversationState({
+					city: city.value
+				})
+			}
+		},
+
 		prompt() {
 			client.addTextResponse('hi there')
 			client.addResponse('provide_whether/temperature', {
 				'number/temperature': 23,
-				'city': 'Pune'
+				'city': client.getConversationState().city
 			})
 			client.done()
 		}
