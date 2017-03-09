@@ -394,14 +394,14 @@ exports.handle = (client) => {
 		extractInfo() {
 			const patientMrn = client.getFirstEntityWithRole(client.getMessagePart(), 'patient_mrn');
 
-			if () {
+			if (patientMrn) {
 				client.updateConversationState({
 					patientMrn: patientMrn
 				});
 			}
 		},
 		satisfied() {
-
+			return false;
 		},
 		prompt() {
 			const patientMrn = client.getConversationState().patientMrn;
@@ -409,7 +409,7 @@ exports.handle = (client) => {
 			if (patientMrn) {
 				client.addTextResponse(JSON.stringify({
 					status: true,
-					actionCode: 'OPEN_PAT_DASHBOARD'
+					actionCode: 'OPEN_PAT_DASHBOARD',
 					data: {
 						patientMrn: patientMrn
 					}
@@ -424,7 +424,7 @@ exports.handle = (client) => {
 	});
 
 	client.runFlow({
-		classification: {
+		classifications: {
 			'command/open_patient_dashboard': 'openPatientDashboard'
 		},
 		eventHandlers: {
@@ -433,10 +433,7 @@ exports.handle = (client) => {
 
 		autoResponses: {},
 		streams: {
-			main: 'promptMessage',
 			openPatientDashboard: [openPatientDashboard],
-			promptMessage: [isPromtWelocome, correctInfo, collectUserName, collectHeight, collectWeight, getBmi],
-			end: [],
 		},
 	})
 }
